@@ -1,0 +1,81 @@
+---
+import { fondosOrdenados } from "../data/fondos.dt";
+let fondos = fondosOrdenados;
+---
+<div id="copiedMessage" class=" fixed z-[9999] hidden bottom-0 right-0 bg-green-500 text-white px-4 py-2 rounded-md mb-2">copied style</div>
+<div id="contenedor"></div>
+<div  class=" flex flex-wrap justify-center items-center gap-5 ">
+  {fondos.map(({ class1, class2, class3, copyClass,uuid },index) => (
+    <div class="w-[200px] h-[300px] relative rounded-3xl mb-[150px] mt-6">
+      <div class="h-full w-full rounded border-solid border-2 border-sky-100 shadow-md overflow-hidden">
+        {class1 && (
+          <div class={class1}>
+            {class2 !== "" && (
+              <div class={class2}>
+                {class3 !== "" && <div class={class3}></div>}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      <div class="flex flex-col items-center mt-5 mb-7">
+      <label for="">{index}</label>
+        <input value={copyClass} type="text" id={`txtc-${uuid}`} readonly class="w-full flex-row justify-center text-white cursor-pointer hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg px-5 py-2.5 text-sm text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 mr-2 mb-2 hidden" />
+        <button id={`cpy-${uuid}`} data-id={uuid} class="w-full flex-row justify-center text-white cursor-pointer hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg px-5 py-2.5 text-sm text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 mr-2 mb-2 hover:shadow-lg transition-all duration-200 ease-in-out hover:scale-100 scale-80 gap-x-2 opacity-70 hover:opacity-100">Copy</button>
+        <button id={`prw-${uuid}`} data-id={uuid} class="w-full flex-row justify-center text-white cursor-pointer hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg px-5 py-2.5 text-sm text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 mr-2 mb-2 hover:shadow-lg transition-all duration-200 ease-in-out hover:scale-100 scale-80 gap-x-2 opacity-70 hover:opacity-100">Preview</button>
+      </div>
+    </div>
+  ))}
+</div>
+
+
+
+<script is:inline>
+  document.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", function() {
+        let id = button.getAttribute("data-id");
+        let input = document.getElementById(`txtc-${id}`);
+        let copiedMessage = document.getElementById("copiedMessage");
+        let container = document.getElementById("contenedor");
+
+        if (button.id.startsWith("cpy")) {
+            if (input) {
+                navigator.clipboard.writeText(input.value).then(() => {
+                    copiedMessage.classList.remove("hidden");
+
+                    // Ocultar el mensaje después de 2 segundos
+                    setTimeout(() => {
+                        copiedMessage.classList.add("hidden");
+                    }, 2000);
+                }).catch(err => console.error("Error al copiar: ", err));
+            }
+        } else if (button.id.startsWith("prw")) {
+        let contenido = input.value;  // Get the content from the input field
+        let container = document.getElementById("contenedor");
+
+        // Clear the container's existing content before setting the preview
+        container.innerHTML = contenido;
+        // Agregar estilos adicionales al contenedor para que ocupe toda la pantalla
+  container.style.position = "fixed";
+  container.style.top = "0";
+  container.style.left = "0";
+  container.style.width = "100%";
+  container.style.height = "100%";
+  container.style.zIndex = "-9999";
+  container.style.overflow = "auto";
+  container.style.backgroundColor = "#fff"; // Cambia esto al color de fondo deseado
+
+  // Establecer la visibilidad del contenedor
+  container.style.display = "block";
+
+      }
+    });
+});
+
+
+</script>
+
+
+
+
+

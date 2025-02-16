@@ -1,0 +1,22 @@
+---
+
+---
+<span id="hora" style="padding-left: 5px; "></span><span style="padding-left: 5px; ">
+
+<script is:inline>
+    const span = document.getElementById("hora");
+    
+    function updateTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, "0");
+      const minutes = now.getMinutes().toString().padStart(2, "0");
+      const seconds = now.getSeconds().toString().padStart(2, "0");
+    
+      span.textContent = `${hours}:${minutes}:${seconds}`;
+      window.requestAnimationFrame(updateTime)
+    }
+    
+    // Call the updateTime function initially to set the time
+    updateTime();
+</script>
+    
